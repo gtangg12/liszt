@@ -1,0 +1,4 @@
+paramiko
+tweepy
+config
+python-dotenv
