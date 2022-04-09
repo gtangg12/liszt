@@ -29,7 +29,7 @@ def text_to_sentences(text):
 
 def text_embedding(text):
     """ Returns unit embedding vector """
-    return sentence_embedding_model.encode([text])
+    return sentence_embedding_model.encode([text])[0]
 
 
 def embedding_similiarity(embedding1, embedding2):
@@ -70,7 +70,3 @@ def filter_text(text):
     for pattern, replace in FILTER_REGEX:
         text = re.sub(pattern, replace, text)
     return text.strip()
-
-
-if __name__ == '__main__':
-    print(text_embedding("I am a person who bikes."))

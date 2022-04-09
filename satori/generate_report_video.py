@@ -1,18 +1,22 @@
 import os
 import datetime
-
 import cv2
 from PIL import Image
 
-from news_scraper import scrape_daily_news
-from news_utils import *
-from news_summarizer import generate_report_text
-from news_article import load_articles
-
+from nlp import scrape_daily_news, load_articles, generate_report_text
 from audio import synthesize_text
-
 from animation import generate_unsynced_video, load_avatar_image
-from combine import combine
+
+import ffmpeg
+
+
+def combine(output_dir):
+    audio_path = f'{output_dir}/audio.mp3'
+    video_path = f'{output_dir}/video.mp4'
+    audio = ffmpeg.input(audio_path)
+    video = ffmpeg.input(video_path)
+    ffmpeg.output(audio, video, f'{output_dir}/combined.mp4').run()
+
 
 def main():
     date_str = datetime.datetime.now().strftime('%Y-%m-%d')
@@ -20,7 +24,6 @@ def main():
     os.makedirs(output_path, exist_ok=True)
 
     scrape_daily_news(output_path)
-
     articles = load_articles(f'{output_path}/news.json')
     text = generate_report_text(articles)
 
@@ -33,4 +36,9 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    date_str = datetime.datetime.now().strftime('%Y-%m-%d')
+    output_path = f'data/{date_str}'
+    os.makedirs(output_path, exist_ok=True)
+    scrape_daily_news(output_path)
+    #articles = load_articles(f'{output_path}/news.json')
+    #text = generate_report_text(articles)

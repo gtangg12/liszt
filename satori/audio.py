@@ -78,7 +78,3 @@ def synthesize_text(text, audio_path):
 
     else:
         synthesize_text_english(text, audio_path)
-
-text = "Hello, I came in from an 8 hour flight. I'm very tired. Can I please check-in early?"
-# synthesize_text_chinese(text, 'output.wav')
-synthesize_text_english(text, 'output.wav')

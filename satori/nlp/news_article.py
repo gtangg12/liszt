@@ -1,5 +1,5 @@
-from news_utils import *
-from news_summarizer import *
+from .news_utils import *
+from .news_summarizer import *
 
 
 class Article:
@@ -29,9 +29,3 @@ def load_articles(path):
     for entry in data:
         articles.append(Article(entry['source'], entry['url'], entry['text']))
     return articles
-
-
-if __name__ == '__main__':
-    date_str = datetime.datetime.now().strftime('%Y-%m-%d')
-    articles = load_articles(f'data/{date_str}/news.json')
-    print(generate_report_text(articles))

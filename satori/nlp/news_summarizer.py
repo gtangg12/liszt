@@ -3,7 +3,7 @@ import datetime
 import numpy as np
 import networkx
 from sklearn.cluster import KMeans
-from news_utils import *
+from .news_utils import *
 
 
 def frequency_matrix(sentences):

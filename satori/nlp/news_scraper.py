@@ -7,7 +7,7 @@ import traceback
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 from GoogleNews import GoogleNews
-from news_utils import *
+from .news_utils import *
 
 
 HEADER = {'User-Agent': 'Mozilla/5.0'}  # get around 403 forbidden error

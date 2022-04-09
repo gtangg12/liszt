@@ -1,0 +1,7 @@
+google-cloud-texttospeech
+librosa
+GoogleNews
+spacy
+transformers
+networkx
+sentence-transformers

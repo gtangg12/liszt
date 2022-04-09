@@ -52,6 +52,7 @@ def animate(avatar_image, parameter_mappings):
     pose = pose.to(device)
     return poser.pose(avatar_image, pose)[0]
 
+
 def generate_head_trajectory(n_frames, audio, sr):
     """ Given number of frames, generate the head trajectory:
 
@@ -147,15 +148,6 @@ def generate_unsynced_video(avatar_base_image, video_path, audio_path, backgroun
         image = image[:, :, ::-1]
         out.write(image)
     out.release()
-
-
-def add_lip_sync(video_path, audio_path):
-    """
-    read video_path, audio_path
-    run wav2lip
-    """
-    #video =
-    pass
 
 
 def main():
