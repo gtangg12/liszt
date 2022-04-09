@@ -1,4 +1,6 @@
 authentication.json
+data/
+models/
 
 # VSCode
 .vscode/

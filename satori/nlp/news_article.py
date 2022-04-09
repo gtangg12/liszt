@@ -28,4 +28,14 @@ def load_articles(path):
         data = json.load(fin)
     for entry in data:
         articles.append(Article(entry['source'], entry['url'], entry['text']))
+<<<<<<< HEAD
     return articles
+=======
+    return articles
+
+
+if __name__ == '__main__':
+    date_str = datetime.datetime.now().strftime('%Y-%m-%d')
+    articles = load_articles(f'data/{date_str}/news.json')
+    print(generate_report_text(articles))
+>>>>>>> 3c8e637 (basic framework)

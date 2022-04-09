@@ -1,13 +1,13 @@
-import os
-import re
 import time
 import json
 import random
-import traceback
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 from GoogleNews import GoogleNews
-from .news_utils import *
+from news_utils import *
+import requests
+import matplotlib.pyplot as plt
+import cv2
 
 
 HEADER = {'User-Agent': 'Mozilla/5.0'}  # get around 403 forbidden error
@@ -58,7 +58,20 @@ class Newspaper:
             return ('', '', [])
         body = filter_text(body) # feel free to add to filter_text regex
         return (self.source, url, body)
-
+        
+    def scrape_image(self, soup):
+        """
+        Scrapes images from the article. Returns a generator.
+        """
+        images = []
+        for image_soup in soup.find_all('img'):
+            image_url = image_soup.get('src')
+            if image_url:
+                bytecodes = requests.get(image_url).content
+                nparr = np.frombuffer(bytecodes, np.uint8)
+                image = cv2.imdecode(nparr, cv2.IMREAD_COLOR) # cv2.IMREAD_COLOR in OpenCV 3.1
+                images.append(image[:,:,::-1])
+                
     def parse(self, soup):
         """ Fill this implementation in for subclasses, specialized to newspaper
 
@@ -138,3 +151,6 @@ def scrape_daily_news(save_path):
 
     with open(f'{save_path}/news.json', 'w') as fout:
         json.dump(articles, fout, indent=4)
+
+if __name__ == '__main__':
+    pass

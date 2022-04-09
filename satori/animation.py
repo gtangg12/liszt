@@ -52,7 +52,6 @@ def animate(avatar_image, parameter_mappings):
     pose = pose.to(device)
     return poser.pose(avatar_image, pose)[0]
 
-
 def generate_head_trajectory(n_frames, audio, sr):
     """ Given number of frames, generate the head trajectory:
 
