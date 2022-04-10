@@ -110,6 +110,7 @@ def synthesize_text(text_arr, audio_dir):
             new_prev = new_prev + second_of_silence
 
             if new_prev.duration_seconds > MAX_VIDEO_LENGTH:
+                os.makedirs(f'{audio_dir}/{idx}', exist_ok=True)
                 file_handle = prev.export(f'{audio_dir}/{idx}/audio.mp3', format="mp3")
                 idx += 1
                 prev = None
