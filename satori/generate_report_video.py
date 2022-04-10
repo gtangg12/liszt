@@ -1,12 +1,11 @@
 import os
 import datetime
 import cv2
-import numpy as np
 from PIL import Image
 
 from nlp import scrape_daily_news, load_articles, generate_report_text
 from audio import synthesize_text
-from animation import generate_unsynced_video, load_avatar_image, add_image_to_video
+from animation import generate_unsynced_video, load_avatar_image
 
 import numpy as np
 import ffmpeg
@@ -26,10 +25,8 @@ def main():
     os.makedirs(output_path, exist_ok=True)
 
     #scrape_daily_news(output_path)
-    #articles = load_articles(f'{output_path}/news.json')
-    #text = generate_report_text(articles)
-
-    text = "Its clear Kid Rock knows his audience and so, apparently, does Donald Trump. On Wednesday night, the singers concert in Evansville, Ind, began with video greeting from the 45th president, which has now been viewed more than half million times on TikTok Flanked by American flags, Trump appeared full of affection both for concertgoers and for Rock, whom he referred to by the singers given name, Bob Immediately after the video ended, Kid Rock launched into performance of his obscenity laced new song, We The People, whose lyrics are filled with partisan rage directed at supporters of the Black Lives Matter movement; people who wear masks to prevent the spread of covid 19; the mainstream media; Anthony Fauci; and using the phrase Lets go, Brandon President Biden, among others."
+    articles = load_articles(f'{output_path}/news.json')
+    text = generate_report_text(articles)
 
     times = synthesize_text([c['text'] for c in text], f'{output_path}/audio.mp3')
     assert len(times) == len(text)
@@ -41,13 +38,10 @@ def main():
 
 
 if __name__ == '__main__':
-    '''
     date_str = datetime.datetime.now().strftime('%Y-%m-%d')
     output_path = f'data/{date_str}'
     os.makedirs(output_path, exist_ok=True)
-    #scrape_daily_news(output_path)
-    articles = load_articles(f'{output_path}/news.json')
-    text = generate_report_text(articles)x
-    print(text)
-    '''
     main()
+    #scrape_daily_news(output_path)
+    #articles = load_articles(f'{output_path}/news.json')
+    #text = generate_report_text(articles)

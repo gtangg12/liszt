@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from GoogleNews import GoogleNews
 from .news_utils import *
 import requests
+import matplotlib.pyplot as plt
 import cv2
 
 
@@ -41,7 +42,7 @@ class Newspaper:
 
     def scrape(self):
         self.articles = list(
-            filter(lambda x: len(x[2]),
+            filter(lambda x: len(x['text']),
                 map(self.scrape_article, self.urls)
             )
         )
@@ -148,13 +149,13 @@ class WaPost(Newspaper):
 
 
 def scrape_daily_news(save_path):
-    newspapers = [CNN(), NYT(), WaPost(), HuffPost()]
+    newspapers = [CNN()]#, NYT(), WaPost(), HuffPost()]
 
     articles = []
     for paper in newspapers:
         paper.crawl()
         paper.scrape()
-        articles.append(paper.articles)
+        articles.extend(paper.articles)
         # for source, url, text in paper.articles:
         #     articles.append({
         #         'source': source,

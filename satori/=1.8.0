@@ -1,0 +1,3 @@
+Using pip 21.2.4 from /nobackup/users/wzhao6/anaconda3/envs/minerva/lib/python3.9/site-packages/pip (python 3.9)
+Requirement already satisfied: scipy in /nobackup/users/wzhao6/anaconda3/envs/minerva/lib/python3.9/site-packages (1.7.3)
+Requirement already satisfied: numpy<1.23.0,>=1.16.5 in /nobackup/users/wzhao6/anaconda3/envs/minerva/lib/python3.9/site-packages (from scipy) (1.19.2)
