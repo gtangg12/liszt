@@ -62,19 +62,43 @@ def synthesize_text_chinese(text, output_string):
         out.write(response.audio_content)
         print('Audio content written to file "output.mp3"')
 
-def synthesize_text(text, audio_path):
-    if len(text) > 5000:
-        text1 = synthesize_text_english(text[0:4998], "output1.mp3")
-        text2 = synthesize_text_english(text[4999:len(text)], "output2.mp3")
+def synthesize_text(text_arr, audio_path):
+    '''
+    text is an array of texts that can be greater in length than 5000 
+    between each element in the array we will add an additional 3 seconds of silence 
+    and return the combined audio
+    '''
 
-        audio1 = ffmpeg.input("output1.mp3")
-        audio2 = ffmpeg.input("output2.mp3")
-        #sound1 = AudioSegment.from_wav("output1.wav")
-        #sound2 = AudioSegment.from_wav("output2.wav")
+    # creates a file with name audio_path
+    times = []
+    synthesize_text_english("", audio_path)
+    prev = AudioSegment.from_file(audio_path, format="mp3")
+    for text in text_arr: 
+        if len(text) > 5000: 
+            text1 = synthesize_text_english(text[0:4998], "output1.mp3")
+            text2 = synthesize_text_english(text[4999:len(text)], "output2.mp3")
 
-        ffmpeg.concat(audio1, audio2, v=0, a=2).output(audio_path).run()
-        #combined_sounds = sound1 + sound2
-        #combined_sounds.export(audio_path, format="mp3")
+            audio1 = AudioSegment.from_file("output1.mp3", format="mp3")
+            audio2 = AudioSegment.from_file("output2.mp3", format="mp3")
+            #prev = AudioSegment.from_file(audio_path, format="mp3") # audio_path is the name of the file
 
-    else:
-        synthesize_text_english(text, audio_path)
+            prev = prev + audio1 + audio2 # combine the three audios
+
+            #file_handle = outpt.export(audio_path, format="mp3")
+        else: 
+            text = synthesize_text_english(text, "output1.mp3") 
+
+            audio1 = AudioSegment.from_file("output1.mp3", format="mp3")
+            #prev = AudioSegment.from_file(audio_path, format="mp3")
+
+            prev = prev + audio1
+
+            #file_handle = outpt.export(audio_path, format="mp3")
+
+        second_of_silence = AudioSegment.silent(duration = 3)
+        #prev = AudioSegment.from_file(audio_path, format="mp3")
+        times.append(prev.duration_seconds)
+
+        prev = prev + second_of_silence
+    file_handle = prev.export(audio_path, format="mp3")
+    return times 
