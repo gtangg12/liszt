@@ -114,7 +114,7 @@ def generate_head_trajectory(n_frames, audio, sr):
     return trajectory
 
 
-def generate_unsynced_video(avatar_base_image, video_path, audio_path, background_image, times, relevant_images):
+def generate_unsynced_video(avatar_base_image, video_path, audio_path, background_image, times=None, relevant_images=None):
     """
     Audio_path is already a wav file
     Write to video_path
@@ -146,12 +146,15 @@ def generate_unsynced_video(avatar_base_image, video_path, audio_path, backgroun
         image = animator.convert_output_image_from_torch_to_numpy(image)
         #assert image.shape[-1] == 4
         #print(image[:,:,:3].max(), image[:,:,3].max())
-        current_time_seconds = i / FRAME_RATE
-        if current_time_seconds > times[current_paragraph]:
-            current_paragraph += 1
+        if times is not None:
+            current_time_seconds = i / FRAME_RATE
+            if current_time_seconds > times[current_paragraph]:
+                current_paragraph += 1
 
-        current_background = relevant_images[current_paragraph]
-        if current_background is None:
+            current_background = relevant_images[current_paragraph]
+            if current_background is None:
+                current_background = background_image
+        else:
             current_background = background_image
         image = image[:, :, 0:3] * (image[:, :, 3:4]) + (1 - image[:, :, 3:4]) * current_background
         image = (image * 255).astype(np.uint8)

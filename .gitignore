@@ -1,6 +1,8 @@
 authentication.json
 
 # VSCode
+
+data/
 .vscode/
 
 # Mac

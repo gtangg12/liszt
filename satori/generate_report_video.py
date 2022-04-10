@@ -32,13 +32,14 @@ def main():
     
     #text = "Its clear Kid Rock knows his audience and so, apparently, does Donald Trump. On Wednesday night, the singers concert in Evansville, Ind, began with video greeting from the 45th president, which has now been viewed more than half million times on TikTok Flanked by American flags, Trump appeared full of affection both for concertgoers and for Rock, whom he referred to by the singers given name, Bob Immediately after the video ended, Kid Rock launched into performance of his obscenity laced new song, We The People, whose lyrics are filled with partisan rage directed at supporters of the Black Lives Matter movement; people who wear masks to prevent the spread of covid 19; the mainstream media; Anthony Fauci; and using the phrase Lets go, Brandon President Biden, among others."
     #times = synthesize_text([c['text'] for c in text], f'{output_path}/audio.mp3')
-    times = synthesize_text(text, f'{output_path}/audio.mp3')
-    assert len(times) == len(text)
-    
-    avatar_image = load_avatar_image('talkinghead/avatar_images/reporter_female.png')
-    background_image = cv2.resize(np.array(Image.open('data/cityscape.jpg')) / 255, (256,256))
-    generate_unsynced_video(avatar_image, f'{output_path}/video.mp4', f'{output_path}/audio.mp3', background_image, times, [None for c in text])#[c['image'] for c in text])
-    combine(output_path)
+    subvideos = synthesize_text(text, f'{output_path}')
+    current_par = 0
+    for i,times in enumerate(subvideos):
+        #assert len(times) == len(text)
+        avatar_image = load_avatar_image('talkinghead/avatar_images/reporter_male.png')
+        background_image = cv2.resize(np.array(Image.open('data/cityscape.jpg')) / 255, (256,256))
+        generate_unsynced_video(avatar_image, f'{output_path}/{i}/video.mp4', f'{output_path}/{i}/audio.mp3', background_image)#, times, [None for c in text])#[c['image'] for c in text])
+        combine(f'{output_path}/{i}')
 
 
 if __name__ == '__main__':
