@@ -79,8 +79,8 @@ def synthesize_text(text_arr, audio_dir):
     for text in text_arr: 
         for _ in range(2):
             if len(text) > 5000: 
-                text1 = synthesize_text_english(text[0:4998], "output1.mp3")
-                text2 = synthesize_text_english(text[4999:len(text)], "output2.mp3")
+                synthesize_text_english(text[0:4998], "output1.mp3")
+                synthesize_text_english(text[4999:len(text)], "output2.mp3")
 
                 audio1 = AudioSegment.from_file("output1.mp3", format="mp3")
                 audio2 = AudioSegment.from_file("output2.mp3", format="mp3")
@@ -91,7 +91,7 @@ def synthesize_text(text_arr, audio_dir):
                     new_prev = prev + audio1 + audio2
                 #file_handle = outpt.export(audio_path, format="mp3")
             else: 
-                text = synthesize_text_english(text, "output1.mp3") 
+                synthesize_text_english(text, "output1.mp3") 
 
                 audio1 = AudioSegment.from_file("output1.mp3", format="mp3")
                 #prev = AudioSegment.from_file(audio_path, format="mp3")
@@ -105,7 +105,7 @@ def synthesize_text(text_arr, audio_dir):
 
             second_of_silence = AudioSegment.silent(duration = 3)
             #prev = AudioSegment.from_file(audio_path, format="mp3")
-            times.append(prev.duration_seconds)
+            #times.append(prev.duration_seconds)
 
             new_prev = new_prev + second_of_silence
 
