@@ -41,7 +41,7 @@ class Newspaper:
 
     def scrape(self):
         self.articles = list(
-            filter(lambda x: len(x[2]),
+            filter(lambda x: len(x['text']),
                 map(self.scrape_article, self.urls)
             )
         )
@@ -154,7 +154,7 @@ def scrape_daily_news(save_path):
     for paper in newspapers:
         paper.crawl()
         paper.scrape()
-        articles.append(paper.articles)
+        articles.extend(paper.articles)
         # for source, url, text in paper.articles:
         #     articles.append({
         #         'source': source,
