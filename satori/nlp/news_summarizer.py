@@ -73,7 +73,7 @@ def summarize_article_group(articles):
     while len(sentences) > 16:
         sentences = text_rank(sentences, len(sentences) / 2)
     text = ' '.join(sentences)
-    summary = huggingface_summarizer(text, min_length=128, max_length=1024)
+    summary = huggingface_summarizer(text, min_length=128, max_length=512)
     return summary[0]['summary_text'].strip()
 
 
@@ -81,13 +81,16 @@ def generate_report_text(articles):
     report_text = []
     clusters = cluster(articles)
     for c in clusters:
+        
+        # a is a class
         image = None
         for a in c:
-            if not len(a['images']):
-                image = a['images'][0]
+            if not len(a.images):
+                image = a.images
                 break
         report_text.append(
             {'text': summarize_article_group(c),
             'image': image})
-        #report_text += '\n\n'
+        
+        #report_text.append(summarize_article_group(c))
     return report_text
