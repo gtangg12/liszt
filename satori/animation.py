@@ -3,11 +3,10 @@ import sys
 import datetime
 import random
 import itertools
-from matplotlib import cm
 import PIL.Image as Image
 import numpy as np
 import torch
-import librosa
+from pydub import AudioSegment
 from tqdm import tqdm
 import cv2
 from common import device
@@ -121,7 +120,10 @@ def generate_unsynced_video(avatar_base_image, video_path, audio_path, backgroun
     Write to video_path
     """
     # 1. count number of video frames
-    audio, sr = librosa.load(audio_path)
+    audiosegment = AudioSegment.from_file(audio_path, format='mp3')
+    audio = audiosegment.get_array_of_samples()
+    sr = audiosegment.frame_rate
+
     n_frames = int(len(audio) * FRAME_RATE / sr)
 
     # 2. generate a head trajectory dictionary

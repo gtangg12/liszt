@@ -1,7 +1,15 @@
-google-cloud-texttospeech
-librosa
+numpy
+bs4
+pydub
+ffmpeg-python
 GoogleNews
 spacy
-transformers
+scipy==1.8
 networkx
+transformers
 sentence-transformers
+
+# install independently
+proto-plus>=1.15.0
+google.api_core
+google-cloud-texttospeech --no-deps --no-build-isolation

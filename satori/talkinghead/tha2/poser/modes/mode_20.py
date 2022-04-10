@@ -1,3 +1,4 @@
+import os
 import math
 from enum import Enum
 from typing import List, Dict, Optional
@@ -245,7 +246,7 @@ def create_poser(
         module_file_names: Optional[Dict[str, str]] = None,
         eyebrow_morphed_image_index: int = EyebrowMorphingCombiner00.EYEBROW_IMAGE_NO_COMBINE_ALPHA_INDEX,
         default_output_index: int = 0) -> Poser:
-    dir = "data"
+    dir = os.path.dirname(os.path.abspath(__file__)) + '/../../../data'
     if module_file_names is None:
         module_file_names = {}
     if KEY_EYEBROW_DECOMPOSER not in module_file_names:

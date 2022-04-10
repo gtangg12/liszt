@@ -1,1 +1,1 @@
-sbatch /nobackup/users/wzhao6/minerva-action/satori/slurm.slurm
+sbatch /nobackup/users/gtangg12/minerva-action/satori/slurm.slurm

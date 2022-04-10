@@ -4,9 +4,8 @@ import random
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 from GoogleNews import GoogleNews
-from news_utils import *
+from .news_utils import *
 import requests
-import matplotlib.pyplot as plt
 import cv2
 
 

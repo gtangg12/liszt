@@ -1,0 +1,14 @@
+name: liszt
+channels:
+  - menpo
+  - conda-forge
+  - pytorch
+dependencies:
+  - pytorch=1.9.0
+  - opencv
+  - scikit-learn
+  - scikit-image
+  - grpcio
+  - matplotlib
+
+
