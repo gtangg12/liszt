@@ -63,14 +63,21 @@ class Newspaper:
         """
         Scrapes images from the article. Returns a generator.
         """
+        
         images = []
         for image_soup in soup.find_all('img'):
             image_url = image_soup.get('src')
-            if image_url:
-                bytecodes = requests.get(image_url).content
-                nparr = np.frombuffer(bytecodes, np.uint8)
-                image = cv2.imdecode(nparr, cv2.IMREAD_COLOR) # cv2.IMREAD_COLOR in OpenCV 3.1
-                images.append(image[:,:,::-1])
+            caption = image_soup.get('alt')
+            if image_url and caption:
+                images.append((image_url, caption))
+        return images
+
+
+    def get_image(self, image_url):
+        bytecodes = requests.get(image_url).content
+        nparr = np.frombuffer(bytecodes, np.uint8)
+        image = cv2.imdecode(nparr, cv2.IMREAD_COLOR) # cv2.IMREAD_COLOR in OpenCV 3.1
+        return image[:,:,::-1]
                 
     def parse(self, soup):
         """ Fill this implementation in for subclasses, specialized to newspaper
@@ -98,7 +105,6 @@ class CNN(Newspaper):
         body = remove_source_tag(body, r'^.*\(CNN.*?\)')
         return body
 
-
 class NYT(Newspaper):
     def __init__(self):
         super().__init__('new york times')
@@ -109,7 +115,6 @@ class NYT(Newspaper):
         body = concat_body_soups(body_soups)
         body = remove_source_tag(body, r'^(.* )?[A-Z]+ —')
         return body
-
 
 class HuffPost(Newspaper):
     def __init__(self):
