@@ -54,10 +54,16 @@ class Newspaper:
         soup = BeautifulSoup(page, 'html.parser')
         try:
             body = self.parse(soup)
+            images = self.scrape_image(soup)
         except:
             return ('', '', [])
         body = filter_text(body) # feel free to add to filter_text regex
-        return (self.source, url, body)
+        return {
+            'source': self.source, 
+            'url': url, 
+            'text': body,
+            'images': images
+        }
         
     def scrape_image(self, soup):
         """
@@ -69,7 +75,9 @@ class Newspaper:
             image_url = image_soup.get('src')
             caption = image_soup.get('alt')
             if image_url and caption:
-                images.append((image_url, caption))
+                images.append({
+                    'url': image_url, 
+                    'caption': caption})
         return images
 
 
@@ -147,15 +155,20 @@ def scrape_daily_news(save_path):
     for paper in newspapers:
         paper.crawl()
         paper.scrape()
-        for source, url, text in paper.articles:
-            articles.append({
-                'source': source,
-                'url': url,
-                'text': text,
-            })
+        articles.append(paper.articles)
+        # for source, url, text in paper.articles:
+        #     articles.append({
+        #         'source': source,
+        #         'url': url,
+        #         'text': text,
+        #     })
 
     with open(f'{save_path}/news.json', 'w') as fout:
         json.dump(articles, fout, indent=4)
 
 if __name__ == '__main__':
-    pass
+    url = "https://www.cnn.com/europe/live-news/ukraine-russia-putin-news-04-09-22/h_ff5483c56912605145a6806accf7b402"
+    cnn = CNN()
+    image_url = cnn.scrape_article(url)['images'][0]['url']
+    image = cnn.get_image(image_url)
+    cv2.imwrite('sample.jpg', image)
