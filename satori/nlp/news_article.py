@@ -7,6 +7,7 @@ class Article:
         self.source = source
         self.url = url
         self.text = text
+        self.image = None
 
         # pipeline
         self.sentences = text_to_sentences(text)
@@ -27,5 +28,5 @@ def load_articles(path):
     with open(path, 'r') as fin:
         data = json.load(fin)
     for entry in data:
-        articles.append(Article(entry['source'], entry['url'], entry['text']))
+        articles.append(Article(entry['source'], entry['url'], entry['text'], entry['image']))
     return articles
