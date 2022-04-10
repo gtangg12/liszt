@@ -78,9 +78,16 @@ def summarize_article_group(articles):
 
 
 def generate_report_text(articles):
-    report_text = ''
+    report_text = []
     clusters = cluster(articles)
     for c in clusters:
-        report_text += summarize_article_group(c)
-        report_text += '\n\n'
+        image = None
+        for a in c:
+            if not len(a['images']):
+                image = a['images'][0]
+                break
+        report_text.append(
+            {'text': summarize_article_group(c),
+            'image': image})
+        #report_text += '\n\n'
     return report_text

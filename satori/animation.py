@@ -114,7 +114,7 @@ def generate_head_trajectory(n_frames, audio, sr):
     return trajectory
 
 
-def generate_unsynced_video(avatar_base_image, video_path, audio_path, background_image):
+def generate_unsynced_video(avatar_base_image, video_path, audio_path, background_image, times, relevant_images):
     """
     Audio_path is already a wav file
     Write to video_path
@@ -134,6 +134,8 @@ def generate_unsynced_video(avatar_base_image, video_path, audio_path, backgroun
     sample = animate(avatar_base_image, trajectory[0])
     out = cv2.VideoWriter(video_path, cv2.VideoWriter_fourcc(*'mp4v'), \
                             FRAME_RATE, (sample.shape[2], sample.shape[1]))
+    
+    current_paragraph = 0
     for i, traj in enumerate(tqdm(trajectory)):
         if i % 100 == 0:
             print(i)
@@ -144,12 +146,18 @@ def generate_unsynced_video(avatar_base_image, video_path, audio_path, backgroun
         image = animator.convert_output_image_from_torch_to_numpy(image)
         #assert image.shape[-1] == 4
         #print(image[:,:,:3].max(), image[:,:,3].max())
-        image = image[:, :, 0:3] * (image[:, :, 3:4]) + (1 - image[:, :, 3:4]) * background_image
+        current_time_seconds = i / FRAME_RATE
+        if current_time_seconds > times[current_paragraph]:
+            current_paragraph += 1
+
+        current_background = relevant_images[current_paragraph]
+        if current_background is None:
+            current_background = background_image
+        image = image[:, :, 0:3] * (image[:, :, 3:4]) + (1 - image[:, :, 3:4]) * current_background
         image = (image * 255).astype(np.uint8)
         image = image[:, :, ::-1]
         out.write(image)
     out.release()
-
 
 def main():
     date_str = datetime.datetime.now().strftime('%Y-%m-%d')
