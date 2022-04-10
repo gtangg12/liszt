@@ -116,6 +116,7 @@ def synthesize_text(text_arr, audio_dir):
             else:
                 prev = new_prev
 
-    file_handle = prev.export(f'{audio_dir}/{idx}/audio.mp3', format="mp3")
-    idx += 1
+    if prev is not None:
+        file_handle = prev.export(f'{audio_dir}/{idx}/audio.mp3', format="mp3")
+        idx += 1
     return times, idx 
