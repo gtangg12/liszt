@@ -1,0 +1,4 @@
+name: minerva-action
+dependencies:
+  - torch
+  - 

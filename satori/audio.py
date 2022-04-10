@@ -1,6 +1,7 @@
 import os
 import ffmpeg
 from pydub import AudioSegment
+from common import MAX_VIDEO_LENGTH
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "authentication.json"
 
@@ -62,7 +63,7 @@ def synthesize_text_chinese(text, output_string):
         out.write(response.audio_content)
         print('Audio content written to file "output.mp3"')
 
-def synthesize_text(text_arr, audio_path):
+def synthesize_text(text_arr, audio_dir):
     '''
     text is an array of texts that can be greater in length than 5000 
     between each element in the array we will add an additional 3 seconds of silence 
@@ -71,8 +72,9 @@ def synthesize_text(text_arr, audio_path):
 
     # creates a file with name audio_path
     times = []
-    synthesize_text_english("", audio_path)
-    prev = AudioSegment.from_file(audio_path, format="mp3")
+    #synthesize_text_english("", audio_path)
+    #prev = AudioSegment.from_file(audio_path, format="mp3")
+    prev=None
     for text in text_arr: 
         if len(text) > 5000: 
             text1 = synthesize_text_english(text[0:4998], "output1.mp3")
