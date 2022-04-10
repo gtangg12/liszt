@@ -88,6 +88,6 @@ def generate_report_text(articles):
                 break
         report_text.append(
             {'text': summarize_article_group(c),
-            'images': image})
+            'image': image})
         #report_text += '\n\n'
     return report_text

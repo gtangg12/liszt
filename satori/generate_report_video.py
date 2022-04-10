@@ -5,8 +5,9 @@ from PIL import Image
 
 from nlp import scrape_daily_news, load_articles, generate_report_text
 from audio import synthesize_text
-from animation import generate_unsynced_video, load_avatar_image
+from animation import generate_unsynced_video, load_avatar_image, add_image_to_video
 
+import numpy as np
 import ffmpeg
 
 
@@ -27,11 +28,12 @@ def main():
     articles = load_articles(f'{output_path}/news.json')
     text = generate_report_text(articles)
 
-    synthesize_text(text, f'{output_path}/audio.mp3')
-
+    times = synthesize_text([c['text'] for c in text], f'{output_path}/audio.mp3')
+    assert len(times) == len(text)
+    
     avatar_image = load_avatar_image('talkinghead/avatar_images/reporter_female.png')
     background_image = cv2.resize(np.array(Image.open('data/cityscape.jpg')) / 255, (256,256))
-    generate_unsynced_video(avatar_image, f'{output_path}/video.mp4', f'{output_path}/audio.mp3', background_image)
+    generate_unsynced_video(avatar_image, f'{output_path}/video.mp4', f'{output_path}/audio.mp3', background_image, times, [c['image'] for c in text])
     combine(output_path)
 
 
